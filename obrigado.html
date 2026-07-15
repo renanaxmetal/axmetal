@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Obrigado! | Axmetal</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" href="assets/img/logo_sem_fundo.png" type="image/png">
+
+    <style>
+        :root {
+            --orange: #E87722;
+            --orange-light: #F59340;
+            --orange-dark: #C45E0A;
+            --gray-50: #F9F9F9;
+            --gray-100: #F3F3F3;
+            --gray-200: #E8E8E8;
+            --gray-700: #444444;
+            --gray-900: #1A1A1A;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .accent-bar {
+            width: 56px; height: 4px;
+            background: var(--orange);
+            border-radius: 2px;
+            margin: 0 auto 24px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 20px;
+        }
+
+        .success-icon {
+            width: 96px; height: 96px;
+            background: rgba(232,119,34,0.10);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+        }
+        .success-icon i {
+            color: var(--orange);
+            font-size: 44px;
+        }
+
+        .countdown {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: var(--orange);
+            line-height: 1;
+        }
+
+        .btn-voltar {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--orange);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 18px 40px;
+            border-radius: 999px;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-voltar:hover { background: var(--orange-dark); }
+        .btn-voltar:active { transform: scale(0.97); }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px 60px;
+        }
+
+        footer {
+            padding: 32px 20px;
+            background: var(--gray-100);
+            border-top: 1px solid var(--gray-200);
+            text-align: center;
+        }
+        footer p {
+            font-size: 14px;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+            background: rgba(255,255,255,0.96);
+            border-bottom: 1px solid var(--gray-200);
+            backdrop-filter: blur(12px);
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 30px !important; }
+            .countdown { font-size: 3.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div style="width:100%;padding:14px 40px;display:flex;justify-content:center;align-items:center;">
+        <a href="index.html">
+            <img src="assets/img/logo_sem_fundo.png" alt="Axmetal Logo" style="height:64px;">
+        </a>
+    </div>
+</nav>
+
+<!-- CONTEÚDO -->
+<main>
+    <div style="max-width:640px;width:100%;text-align:center;">
+
+        <div class="success-icon">
+            <i class="fa-solid fa-check"></i>
+        </div>
+
+        <div class="accent-bar"></div>
+
+        <h1 style="font-size:clamp(30px,4.5vw,48px);font-weight:800;margin:0 0 20px;letter-spacing:-0.02em;line-height:1.15;">
+            Candidatura enviada<br>com sucesso!
+        </h1>
+
+        <p style="font-size:18px;color:var(--gray-700);max-width:460px;margin:0 auto 48px;line-height:1.7;">
+            Obrigado por se candidatar na Axmetal.
+            Nossa equipe analisará seu currículo em breve e entraremos em contato.
+        </p>
+
+        <!-- Contagem regressiva -->
+        <div class="card" style="padding:40px;margin-bottom:40px;">
+            <p style="font-size:16px;color:var(--gray-700);margin:0 0 16px;">
+                Você será redirecionado para a página inicial em
+            </p>
+
+            <div id="countdown" class="countdown">10</div>
+
+            <p style="font-size:13px;color:var(--gray-700);opacity:0.6;margin:16px 0 0;letter-spacing:0.04em;text-transform:uppercase;">
+                segundos
+            </p>
+        </div>
+
+        <a href="index.html" class="btn-voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+            Voltar para o site agora
+        </a>
+
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Axmetal Estamparia e Molas de Precisão Ltda. — Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    let segundos = 10;
+    const countdownElement = document.getElementById('countdown');
+
+    const timer = setInterval(() => {
+        segundos--;
+        countdownElement.textContent = segundos;
+
+        if (segundos <= 0) {
+            clearInterval(timer);
+            window.location.href = "index.html";
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>
