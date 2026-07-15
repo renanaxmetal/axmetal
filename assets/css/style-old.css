@@ -1,0 +1,52 @@
+/* =============================================
+   AXMETAL - Style.css
+   Versão Premium
+============================================= */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Configurações Globais */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.metallic {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+}
+
+/* Efeitos de Hover Premium */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+}
+
+/* Hero com vídeo */
+#home video {
+  filter: brightness(0.75) contrast(1.1);
+}
+
+/* Scroll suave em toda a página */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animação do Marquee de Clientes */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 3s linear infinite;
+}
+
+#clientsMarquee:hover {
+  animation-play-state: paused;
+}
+

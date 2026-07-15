@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Axmetal - Excelência em peças metálicas conformadas a frio.">
+    <title>Axmetal | Excelência em Conformação a Frio </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" href="assets/img/logo_sem_fundo.png" type="image/png">
+
+    <style>
+        :root {
+            --orange: #E87722;
+            --orange-light: #F59340;
+            --orange-dark: #C45E0A;
+            --gray-50: #F9F9F9;
+            --gray-100: #F3F3F3;
+            --gray-200: #E8E8E8;
+            --gray-700: #444444;
+            --gray-900: #1A1A1A;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: #ffffff;
+            color: var(--gray-900);
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        nav {
+            background: rgba(255,255,255,0.96);
+            border-bottom: 1px solid var(--gray-200);
+            backdrop-filter: blur(12px);
+        }
+
+        nav a { color: var(--gray-700); }
+        nav a:hover { color: var(--orange); }
+
+        .nav-cta {
+            background: var(--orange);
+            color: #fff !important;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 999px;
+            transition: background 0.2s;
+        }
+        .nav-cta:hover { background: var(--orange-dark) !important; color: #fff !important; }
+
+        #home { position: relative; min-height: 100vh; display: flex; align-items: center; }
+
+        #home video {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.42) 60%, rgba(0,0,0,0.55) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative; z-index: 2;
+            width: 100%; padding: 0 40px;
+            text-align: center;
+        }
+
+        .section-inner {
+            width: 100%;
+            padding: 0 56px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: box-shadow 0.25s, transform 0.25s;
+        }
+        .card:hover {
+            box-shadow: 0 12px 40px rgba(232,119,34,0.12);
+            transform: translateY(-4px);
+        }
+
+        .accent-bar {
+            width: 56px; height: 4px;
+            background: var(--orange);
+            border-radius: 2px;
+            margin: 0 auto 24px;
+        }
+
+        .bg-white-section { background: #ffffff; }
+        .bg-gray-section  { background: var(--gray-50); }
+        .bg-dark-section  { background: var(--gray-900); }
+
+        #carouselTrack { display: flex; transition: transform 0.7s ease-out; }
+        .slide { min-width: 100%; padding: 0 16px; }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gray-200); cursor: pointer; transition: all 0.2s; }
+        .dot.active { background: var(--orange); transform: scale(1.3); }
+
+        input, textarea, select {
+            width: 100%;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 14px 20px;
+            color: var(--gray-900);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus, textarea:focus { border-color: var(--orange); }
+
+        footer { background: var(--gray-900); color: #ccc; }
+        footer a { color: #aaa; transition: color 0.2s; }
+        footer a:hover { color: var(--orange); }
+
+        @media (max-width: 768px) {
+            .section-inner { padding: 0 20px; }
+            .hero-content  { padding: 0 20px; }
+        }
+
+        section { width: 100%; }
+
+        .text-orange { color: var(--orange); }
+        .bg-orange { background: var(--orange); }
+        .border-orange { border-color: var(--orange); }
+
+        .seg-pill {
+            display: inline-block;
+            border: 1.5px solid var(--orange);
+            color: var(--orange);
+            padding: 6px 18px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            background: transparent;
+        }
+
+        .val-card img { transition: transform 0.6s ease; }
+        .val-card:hover img { transform: scale(1.04); }
+
+        /* ── TECNOLOGIA SLIDESHOW ── */
+        #techSlideshow {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+        #techTrack {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.9s cubic-bezier(0.77, 0, 0.18, 1);
+            will-change: transform;
+        }
+        #techTrack > div {
+            min-width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+        }
+        #techTrack > div img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .tdot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.25s;
+            background: rgba(255,255,255,0.35);
+            border: none;
+            padding: 0;
+        }
+        .tdot.active {
+            background: var(--orange) !important;
+            transform: scale(1.35);
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav style="position:fixed;top:0;width:100%;z-index:50;">
+    <div style="width:100%;padding:14px 40px;display:flex;justify-content:space-between;align-items:center;">
+
+        <img src="assets/img/logo_sem_fundo.png" alt="Axmetal Logo" style="height:64px;flex-shrink:0;">
+
+        <div style="display:flex;gap:24px;font-size:18px;font-weight:500;align-items:center;flex:1;justify-content:center;" class="hidden md:flex">
+            <a href="#home">Início</a>
+            <a href="#quem-somos">Quem Somos</a>
+            <a href="#estrutura">Estrutura</a>
+            <a href="#produtos">Produtos</a>
+            <a href="#segmentos">Segmentos</a>
+            <a href="#tecnologia">Tecnologia</a>
+            <a href="#trabalhe-conosco">Faça Parte da Equipe</a>
+        </div>
+
+        <a href="#contato" class="nav-cta" style="flex-shrink:0;">Contato</a>
+    </div>
+</nav>
+
+
+<!-- HERO -->
+<section id="home">
+    <video autoplay muted loop playsinline poster="assets/img/hero-poster.jpg">
+        <source src="assets/video/dji0404.mp4" type="video/mp4">
+        <source src="assets/video/dji0404.mp4.webm" type="video/webm">
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <h1 style="font-size:clamp(36px,5.5vw,80px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:24px;letter-spacing:-0.02em;">
+            Excelência em Peças Metálicas<br>
+            <span style="color:var(--orange-light);">Conformadas a Frio</span>
+        </h1>
+        <p style="font-size:clamp(16px,1.5vw,22px);color:rgba(255,255,255,0.88);max-width:700px;margin:0 auto;line-height:1.7;">
+            A Axmetal entrega soluções completas e de alta precisão em estampados, conjuntos soldados, molas técnicas e peças aramadas.
+        </p>
+    </div>
+</section>
+
+
+<!-- QUEM SOMOS -->
+<section id="quem-somos" class="bg-white-section" style="padding:100px 0;">
+    <div class="section-inner">
+        <div style="text-align:center;margin-bottom:56px;">
+            <div class="accent-bar"></div>
+            <h2 style="font-size:clamp(28px,3.5vw,48px);font-weight:800;margin:0;">Quem Somos</h2>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
+            <div>
+                <p style="font-size:18px;line-height:1.8;color:var(--gray-700);margin-bottom:32px;">
+                    A Axmetal é uma empresa brasileira especializada em soluções para o setor industrial, reconhecida pelo compromisso com a qualidade, inovação e excelência no atendimento. Nossa atuação é pautada em relações de confiança, oferecendo produtos e serviços que atendem às necessidades de cada cliente com eficiência e confiabilidade.
+                </p>
+
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr;gap:20px;">
+                <!-- Cards moved here: 100% nacional e ISO 9001 substituem o card 45+ -->
+                <div class="card" style="padding:36px;">
+                    <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;">
+                        <span style="color:var(--orange);font-size:22px;"><i class="fa-solid fa-check-circle"></i></span>
+                        <h4 style="font-size:18px;font-weight:700;margin:0;">Empresa 100% Nacional</h4>
+                    </div>
+                    <p style="font-size:15px;color:var(--gray-700);line-height:1.7;margin:0;">Orgulhosamente brasileira, com toda a cadeia produtiva e de decisão no Brasil.</p>
+                </div>
+                <div class="card" style="padding:36px;">
+                    <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;">
+                        <span style="color:var(--orange);font-size:22px;"><i class="fa-solid fa-check-circle"></i></span>
+                        <h4 style="font-size:18px;font-weight:700;margin:0;">Certificação ISO 9001</h4>
+                    </div>
+                    <p style="font-size:15px;color:var(--gray-700);line-height:1.7;margin:0;">Sistema de Gestão da Qualidade certificado pela ISO 9001, garantindo processos confiáveis e rastreáveis.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- NOSSOS VALORES -->
+<section class="bg-gray-section" style="padding:100px 0;">
+    <div class="section-inner">
+        <div style="text-align:center;margin-bottom:56px;">
+            <div class="accent-bar"></div>
+            <h2 style="font-size:clamp(28px,3.5vw,48px);font-weight:800;margin:0 0 16px;">Nossos Valores</h2>
+            <p style="font-size:18px;color:var(--gray-700);max-width:560px;margin:0 auto;line-height:1.7;">
+                Competência, compromisso e responsabilidade que transformam execução em resultado.
+            </p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;">
+
+            <div class="card val-card">
+                <div style="height:360px;overflow:hidden;position:relative;">
+                    <img src="assets/img/nossos_valores/pessoas3.png" alt="Pessoas"
+                         style="width:100%;height:100%;object-fit:cover;">
+                    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.55),transparent);"></div>
+                    <h3 style="position:absolute;bottom:20px;left:24px;color:#fff;font-size:26px;font-weight:700;margin:0;">Pessoas</h3>
+                </div>
+                <div style="padding:28px;">
+                    <p style="color:var(--gray-700);line-height:1.7;margin:0;">
+                        Nossa maior força. Colaboradores qualificados e engajados que fazem da Axmetal uma empresa humana e altamente produtiva.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card val-card">
+                <div style="height:360px;overflow:hidden;position:relative;">
+                    <img src="assets/img/nossos_valores/tecnologia1.jpg" alt="Tecnologia"
+                         style="width:100%;height:100%;object-fit:cover;">
+                    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.55),transparent);"></div>
+                    <h3 style="position:absolute;bottom:20px;left:24px;color:#fff;font-size:26px;font-weight:700;margin:0;">Tecnologia</h3>
+                </div>
+                <div style="padding:28px;">
+                    <p style="color:var(--gray-700);line-height:1.7;margin:0;">
+                        Investimos continuamente em máquinas de última geração, automação e processos industriais 4.0 para entregar precisão e eficiência.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card val-card">
+                <div style="height:360px;overflow:hidden;position:relative;">
+                    <img src="assets/img/nossos_valores/solucao_problemas.jpg" alt="Solução"
+                         style="width:100%;height:100%;object-fit:cover;">
+                    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.55),transparent);"></div>
+                    <h3 style="position:absolute;bottom:20px;left:24px;color:#fff;font-size:26px;font-weight:700;margin:0;">Solução</h3>
+                </div>
+                <div style="padding:28px;">
+                    <p style="color:var(--gray-700);line-height:1.7;margin:0;">
+                        Trabalhamos lado a lado para desenvolver soluções técnicas eficientes, seguras e competitivas, transformando desafios em resultados.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ESTRUTURA -->
+<section id="estrutura" style="width:100%;position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;">
+    <video class="factory-video" autoplay muted loop playsinline
+           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+        <source src="assets/video/videov4.mp4" type="video/mp4">
+    </video>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.30) 0%,rgba(0,0,0,0.42) 60%,rgba(0,0,0,0.55) 100%);z-index:1;"></div>
+
+    <div style="position:relative;z-index:2;width:100%;text-align:center;padding:0 40px;">
+        <div style="width:56px;height:4px;background:var(--orange-light);border-radius:2px;margin:0 auto 24px;"></div>
+        <h2 style="font-size:clamp(32px,4.5vw,64px);font-weight:800;color:#fff;margin:0 0 20px;letter-spacing:-0.02em;">Estrutura</h2>
+        <p style="font-size:clamp(16px,1.4vw,20px);color:rgba(255,255,255,0.85);max-width:680px;margin:0 auto;line-height:1.7;">
+            Experiência industrial em um parque fabril moderno, preparado para entregar precisão e volume com consistência.
+        </p>
+    </div>
+</section>
+
+
+<!-- PORTFÓLIO DE PRODUTOS -->
+<section id="produtos" class="bg-white-section" style="padding:100px 0;">
+    <div class="section-inner">
+        <div style="text-align:center;margin-bottom:56px;">
+            <div class="accent-bar"></div>
+            <h2 style="font-size:clamp(28px,3.5vw,48px);font-weight:800;margin:0 0 16px;">Portfólio de Produtos</h2>
+            <p style="font-size:18px;color:var(--gray-700);max-width:640px;margin:0 auto;line-height:1.7;">
+                Nossos produtos estão presentes em soluções essenciais para veículos, linha branca e indústria em geral.
+            </p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:64px;">
+
+            <div class="card">
+                <div style="height:360px;overflow:hidden;border-bottom:1.5px solid var(--gray-200);">
+                    <img src="assets/img/estampados/2.png" alt="Estampados"
+                         style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s;">
+                </div>
+                <div style="padding:24px;text-align:center;">
+                    <h3 style="font-size:20px;font-weight:700;margin:0 0 8px;">Estampados</h3>
+                    <p style="font-size:14px;color:var(--gray-700);margin:0;">Precisão e repetibilidade em prensas de até 400 toneladas</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="height:360px;overflow:hidden;border-bottom:1.5px solid var(--gray-200);">
+                    <img src="assets/img/conjuntos_soldados/5.png" alt="Conjuntos Soldados"
+                         style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s;">
+                </div>
+                <div style="padding:24px;text-align:center;">
+                    <h3 style="font-size:20px;font-weight:700;margin:0 0 8px;">Conjuntos Soldados</h3>
+                    <p style="font-size:14px;color:var(--gray-700);margin:0;">Montagens completas com solda robotizada</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="height:360px;overflow:hidden;border-bottom:1.5px solid var(--gray-200);">
+                    <img src="assets/img/molas_tecnicas/1.png" alt="Molas Técnicas"
+                         style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s;">
+                </div>
+                <div style="padding:24px;text-align:center;">
+                    <h3 style="font-size:20px;font-weight:700;margin:0 0 8px;">Molas Técnicas</h3>
+                    <p style="font-size:14px;color:var(--gray-700);margin:0;">Tração, compressão e torção em alta precisão</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="height:360px;overflow:hidden;border-bottom:1.5px solid var(--gray-200);">
+                    <img src="assets/img/pecas_aramadas/4.png" alt="Peças Aramadas"
+                         style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s;">
+                </div>
+                <div style="padding:24px;text-align:center;">
+                    <h3 style="font-size:20px;font-weight:700;margin:0 0 8px;">Peças Aramadas</h3>
+                    <p style="font-size:14px;color:var(--gray-700);margin:0;">Conformação CNC de arames e formas complexas</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- SEGMENTOS -->
+<section id="segmentos" class="bg-gray-section" style="padding:100px 0;">
+    <div class="section-inner">
+        <div style="text-align:center;margin-bottom:56px;">
+            <div class="accent-bar"></div>
+            <h2 style="font-size:clamp(28px,3.5vw,48px);font-weight:800;margin:0 0 16px;">Segmentos</h2>
+            <p style="font-size:18px;color:var(--gray-700);max-width:580px;margin:0 auto;line-height:1.7;">
+                Atendemos os principais segmentos da indústria nacional com soluções técnicas de alta performance.
+            </p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;">
+
+            <div class="card" style="padding:36px;">
+                <div style="width:52px;height:52px;background:rgba(232,119,34,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+                    <i class="fa-solid fa-car" style="color:var(--orange);font-size:22px;"></i>
+                </div>
+                <h3 style="font-size:22px;font-weight:700;margin:0 0 12px;">Automotivo</h3>
+                <p style="color:var(--gray-700);line-height:1.7;margin:0 0 20px;">
+                    Componentes para interior do veículo, mecanismo de acesso, sistema de freios, bancos, motor e transmissão.
+                </p>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <span class="seg-pill">Interior</span>
+                    <span class="seg-pill">Freios</span>
+                    <span class="seg-pill">Bancos</span>
+                    <span class="seg-pill">Motor</span>
+                    <span class="seg-pill">Transmissão</span>
+                </div>
+            </div>
+
+            <div class="card" style="padding:36px;">
+                <div style="width:52px;height:52px;background:rgba(232,119,34,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+                    <i class="fa-solid fa-blender" style="color:var(--orange);font-size:22px;"></i>
+                </div>
+                <h3 style="font-size:22px;font-weight:700;margin:0 0 12px;">Linha Branca</h3>
+                <p style="color:var(--gray-700);line-height:1.7;margin:0 0 20px;">
+                    Peças e conjuntos para eletrodomésticos e equipamentos de uso doméstico com alta qualidade e confiabilidade.
+                </p>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <span class="seg-pill">Eletrodomésticos</span>
+                    <span class="seg-pill">Refrigeração</span>
+                    <span class="seg-pill">Lavanderia</span>
+                </div>
+            </div>
+
+            <div class="card" style="padding:36px;">
+                <div style="width:52px;height:52px;background:rgba(232,119,34,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+                    <i class="fa-solid fa-industry" style="color:var(--orange);font-size:22px;"></i>
+                </div>
+                <h3 style="font-size:22px;font-weight:700;margin:0 0 12px;">Indústria Geral</h3>
+                <p style="color:var(--gray-700);line-height:1.7;margin:0 0 20px;">
+                    Soluções para os mais variados setores industriais, com flexibilidade de projetos e capacidade de alto volume.
+                </p>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <span class="seg-pill">Metalurgia</span>
+                    <span class="seg-pill">Equipamentos</span>
+                    <span class="seg-pill">Componentes</span>
+                </div>
+            </div>
+
+            <div class="card" style="padding:36px;">
+                <div style="width:52px;height:52px;background:rgba(232,119,34,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+                    <i class="fa-solid fa-lightbulb" style="color:var(--orange);font-size:22px;"></i>
+                </div>
+                <h3 style="font-size:22px;font-weight:700;margin:0 0 12px;">Iluminação</h3>
+                <p style="color:var(--gray-700);line-height:1.7;margin:0 0 20px;">
+                    Componentes metálicos de precisão para sistemas de iluminação automotiva e industrial.
+                </p>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <span class="seg-pill">Automotiva</span>
+                    <span class="seg-pill">Industrial</span>
+                </div>
+            </div>
+
+            <div class="card" style="padding:36px;">
+                <div style="width:52px;height:52px;background:rgba(232,119,34,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+                    <i class="fa-solid fa-microchip" style="color:var(--orange);font-size:22px;"></i>
+                </div>
+                <h3 style="font-size:22px;font-weight:700;margin:0 0 12px;">Eletrônico</h3>
+                <p style="color:var(--gray-700);line-height:1.7;margin:0 0 20px;">
+                    Terminais e componentes estampados para equipamentos eletrônicos com tolerâncias rigorosas.
+                </p>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <span class="seg-pill">Terminais</span>
+                    <span class="seg-pill">Conectores</span>
+                    <span class="seg-pill">Clips</span>
+                </div>
+            </div>
+
+            <div class="card" style="padding:36px;">
+                <div style="width:52px;height:52px;background:rgba(232,119,34,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+                    <i class="fa-solid fa-shield-halved" style="color:var(--orange);font-size:22px;"></i>
+                </div>
+                <h3 style="font-size:22px;font-weight:700;margin:0 0 12px;">Segurança</h3>
+                <p style="color:var(--gray-700);line-height:1.7;margin:0 0 20px;">
+                    Peças para mecanismos de travamento, fechaduras e sistemas de acesso com alta confiabilidade.
+                </p>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <span class="seg-pill">Fechaduras</span>
+                    <span class="seg-pill">Travamentos</span>
+                    <span class="seg-pill">Acesso</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══ TECNOLOGIA ═══ -->
+<section id="tecnologia" style="position:relative;width:100%;min-height:100vh;overflow:hidden;">
+
+    <!-- Slideshow de fundo -->
+    <div id="techSlideshow">
+        <div id="techTrack">
+            <div><img src="assets/img/maquinas/3v2.png"               alt="Máquina 1"></div>
+            <div><img src="assets/img/maquinas/4v2.png"               alt="Máquina 2"></div>
+            <div><img src="assets/img/maquinas/2v2.png"               alt="Máquina 3"></div>
+            <div><img src="assets/img/maquinas/Yaskawav3.jpg"         alt="Máquina 4"></div>
+            <div><img src="assets/img/maquinas/IMG_5974v2.JPG"        alt="Máquina 5"></div>
+            <div><img src="assets/img/maquinas/Agiecharmilles2.png"   alt="Máquina 6"></div>
+            <div><img src="assets/img/maquinas/IMG_5985v2.jpg"        alt="Máquina 7"></div>
+            <div><img src="assets/img/maquinas/IMG_5962v2.jpg"        alt="Máquina 8"></div>
+        </div>
+    </div>
+
+    <!-- Overlay escuro geral -->
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,0.05);z-index:1;pointer-events:none;"></div>
+
+    <!-- Gradiente inferior -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:45%;background:linear-gradient(to top,rgba(0,0,0,0.82),transparent);z-index:2;pointer-events:none;"></div>
+
+    <!-- Título centralizado -->
+    <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 40px;pointer-events:none;">
+        <div style="width:56px;height:4px;background:var(--orange-light);border-radius:2px;margin:0 auto 28px;"></div>
+        <h2 style="font-size:clamp(40px,5.5vw,80px);font-weight:800;color:#fff;margin:0 0 20px;letter-spacing:-0.02em;line-height:1.05;">Tecnologia</h2>
+        <p style="font-size:clamp(15px,1.4vw,20px);color:rgba(255,255,255,0.82);max-width:640px;margin:0;line-height:1.75;">
+            Parque industrial moderno e altamente diversificado, preparado para atender projetos de alto volume e demandas técnicas complexas.
+        </p>
+    </div>
+
+    <!-- Controles de navegação (inferior direito) -->
+    <div style="position:absolute;bottom:0;left:0;right:0;z-index:4;padding:36px 56px;display:flex;align-items:flex-end;justify-content:flex-end;">
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:16px;">
+            <div style="display:flex;gap:10px;">
+                <button id="btnPrev" style="background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.35);color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background 0.2s;">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button id="btnNext" style="background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.35);color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background 0.2s;">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+            <div id="techDots" style="display:flex;gap:8px;"></div>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- CONTATO -->
+<section id="contato" class="bg-gray-section" style="padding:100px 0;">
+    <div class="section-inner">
+        <div style="text-align:center;margin-bottom:56px;">
+            <div class="accent-bar"></div>
+            <h2 style="font-size:clamp(28px,3.5vw,48px);font-weight:800;margin:0 0 16px;">Entre em Contato</h2>
+            <p style="font-size:18px;color:var(--gray-700);max-width:420px;margin:0 auto;line-height:1.6;">
+                Estamos prontos para atender sua demanda com excelência e agilidade.
+            </p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:56px;">
+
+            <div class="card" style="padding:36px;text-align:center;">
+                <div style="font-size:36px;margin-bottom:16px;">📞</div>
+                <h3 style="font-size:18px;font-weight:700;margin:0 0 12px;">Telefone</h3>
+                <a href="tel:1120885151" style="font-size:22px;font-weight:700;color:var(--orange);text-decoration:none;">(11) 2088-5151</a>
+            </div>
+
+            <div class="card" style="padding:36px;text-align:center;">
+                <div style="font-size:36px;margin-bottom:16px;">✉️</div>
+                <h3 style="font-size:18px;font-weight:700;margin:0 0 12px;">E-mail</h3>
+                <a href="mailto:vendas@axmetal.com.br" style="font-size:17px;color:var(--orange);text-decoration:none;">vendas@axmetal.com.br</a>
+            </div>
+
+            <div class="card" style="padding:36px;text-align:center;">
+                <div style="font-size:36px;margin-bottom:16px;">📍</div>
+                <h3 style="font-size:18px;font-weight:700;margin:0 0 12px;">Endereço</h3>
+                <p style="color:var(--gray-700);line-height:1.7;margin:0;font-size:15px;">
+                    Rua Deputado Ulisses Guimarães, 506<br>
+                    Parque Santo Agostinho<br>
+                    Guarulhos — SP · CEP 07140-115
+                </p>
+            </div>
+        </div>
+
+        <div>
+            <div style="border-radius:20px;overflow:hidden;border:1px solid var(--gray-200);box-shadow:0 4px 24px rgba(0,0,0,0.06);">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.000000000000!2d-46.533000!3d-23.460000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5f0000000000%3A0x0000000000000000!2sRua%20Deputado%20Ulisses%20Guimar%C3%A3es%2C%20506%20-%20Parque%20Santo%20Agostinho%2C%20Guarulhos%20-%20SP%2C%2007140-115!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+                    width="100%" height="420" style="border:0;display:block;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- TRABALHE CONOSCO -->
+<section id="trabalhe-conosco" class="bg-white-section" style="padding:100px 0;">
+    <div class="section-inner">
+        <div style="text-align:center;margin-bottom:56px;">
+            <div class="accent-bar"></div>
+            <h2 style="font-size:clamp(28px,3.5vw,48px);font-weight:800;margin:0 0 16px;">Faça Parte da Equipe</h2>
+            <p style="font-size:18px;color:var(--gray-700);max-width:560px;margin:0 auto;line-height:1.7;">
+                Junte-se a uma empresa em constante crescimento. Envie sua candidatura e faça parte de uma equipe que valoriza talento, compromisso e excelência.
+            </p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:start;">
+
+            <div class="card" style="padding:48px;">
+                <form action="https://formsubmit.co/vagas@axmetal.com.br" method="POST" enctype="multipart/form-data"
+                      style="display:flex;flex-direction:column;gap:24px;">
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                        <div>
+                            <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Nome completo *</label>
+                            <input type="text" name="nome" required placeholder="Seu nome completo">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">E-mail *</label>
+                            <input type="email" name="email" required placeholder="seu@email.com">
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                        <div>
+                            <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Telefone / WhatsApp</label>
+                            <input type="tel" name="telefone" placeholder="(11) 99999-9999">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Vaga pretendida *</label>
+                            <input type="text" name="vaga" placeholder="Ex: Auxiliar de Produção..." required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Mensagem / Observações</label>
+                        <textarea name="mensagem" rows="5" placeholder="Conte um pouco sobre você..." style="resize:vertical;"></textarea>
+                    </div>
+
+                    <div>
+                        <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Currículo (PDF, Word ou imagem) *</label>
+                        <input type="file" name="curriculo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required
+                               style="padding:12px 16px;cursor:pointer;">
+                    </div>
+
+                    <input type="hidden" name="_subject" value="Nova candidatura - Trabalhe Conosco Axmetal">
+                    <input type="hidden" name="_next" value="https://www.axmetal.com.br/obrigado.html">
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <button type="submit"
+                        style="background:var(--orange);color:#fff;font-size:16px;font-weight:700;padding:18px;border:none;border-radius:12px;cursor:pointer;transition:background 0.2s;letter-spacing:0.02em;"
+                        onmouseover="this.style.background='var(--orange-dark)'" onmouseout="this.style.background='var(--orange)'">
+                        Enviar Candidatura
+                    </button>
+
+                    <p style="text-align:center;font-size:12px;color:var(--gray-700);margin:0;opacity:0.6;">
+                        Seus dados estão seguros e serão usados apenas para processo seletivo.
+                    </p>
+                </form>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:24px;">
+                <div class="card" style="padding:32px;">
+                    <div style="width:44px;height:44px;background:rgba(232,119,34,0.10);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+                        <i class="fa-solid fa-people-group" style="color:var(--orange);font-size:20px;"></i>
+                    </div>
+                    <h4 style="font-size:17px;font-weight:700;margin:0 0 10px;">Equipe qualificada</h4>
+                    <p style="font-size:14px;color:var(--gray-700);line-height:1.7;margin:0;">Trabalhamos com profissionais engajados, em ambiente de desenvolvimento contínuo.</p>
+                </div>
+                <div class="card" style="padding:32px;">
+                    <div style="width:44px;height:44px;background:rgba(232,119,34,0.10);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+                        <i class="fa-solid fa-chart-line" style="color:var(--orange);font-size:20px;"></i>
+                    </div>
+                    <h4 style="font-size:17px;font-weight:700;margin:0 0 10px;">Crescimento real</h4>
+                    <p style="font-size:14px;color:var(--gray-700);line-height:1.7;margin:0;">Constante expansão de capacidade e equipe.</p>
+                </div>
+                <div class="card" style="padding:32px;">
+                    <div style="width:44px;height:44px;background:rgba(232,119,34,0.10);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+                        <i class="fa-solid fa-shield-halved" style="color:var(--orange);font-size:20px;"></i>
+                    </div>
+                    <h4 style="font-size:17px;font-weight:700;margin:0 0 10px;">Empresa sólida</h4>
+                    <p style="font-size:14px;color:var(--gray-700);line-height:1.7;margin:0;">100% nacional, certificada ISO 9001, com décadas de credibilidade no mercado.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer style="padding:56px 0;background:#f3f3f3;border-top:1px solid var(--gray-200);">
+    <div style="width:100%;padding:0 56px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
+
+        <img src="assets/img/logo_sem_fundo.png" alt="Axmetal Logo" style="height:64px;">
+
+        <p style="font-size:14px;color:var(--gray-700);line-height:1.7;margin:0 auto;text-align:center;">
+            © 2026 Axmetal Estamparia e Molas de Precisão Ltda. — Todos os direitos reservados.
+        </p>
+
+    </div>
+</footer>
+
+
+<!-- ═══════════════════════════ SCRIPTS ═══════════════════════════ -->
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    const techTotal   = 8;
+    let   techCurrent = 0;
+    let   techTimer   = null;
+
+    function updateTech(instant) {
+        const track = document.getElementById('techTrack');
+        if (track) {
+            track.style.transition = instant ? 'none' : 'transform 0.9s cubic-bezier(0.77,0,0.18,1)';
+            track.style.transform  = `translateX(-${techCurrent * 100}%)`;
+        }
+        document.querySelectorAll('#techDots .tdot').forEach((d, i) => {
+            d.classList.toggle('active', i === techCurrent);
+        });
+    }
+
+    function techNext() { techCurrent = (techCurrent + 1) % techTotal; updateTech(); }
+    function techPrev() { techCurrent = (techCurrent - 1 + techTotal) % techTotal; updateTech(); }
+
+    function startAutoplay() {
+        stopAutoplay();
+        techTimer = setInterval(techNext, 4500);
+    }
+    function stopAutoplay() {
+        if (techTimer) { clearInterval(techTimer); techTimer = null; }
+    }
+
+    function createTechDots() {
+        const container = document.getElementById('techDots');
+        if (!container) return;
+        container.innerHTML = '';
+        for (let i = 0; i < techTotal; i++) {
+            const d = document.createElement('button');
+            d.className = 'tdot';
+            d.setAttribute('aria-label', `Slide ${i + 1}`);
+            d.addEventListener('click', () => { techCurrent = i; updateTech(); });
+            container.appendChild(d);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        createTechDots();
+        updateTech(true);
+        startAutoplay();
+
+        document.getElementById('btnPrev').addEventListener('click', () => {
+            techPrev();
+            startAutoplay();
+        });
+        document.getElementById('btnNext').addEventListener('click', () => {
+            techNext();
+            startAutoplay();
+        });
+
+        const secTec = document.getElementById('tecnologia');
+        if (secTec) {
+            secTec.addEventListener('mouseenter', stopAutoplay);
+            secTec.addEventListener('mouseleave', startAutoplay);
+        }
+
+        document.querySelectorAll('.factory-video').forEach(v => {
+            v.playbackRate = 1.0;
+            v.style.opacity   = '0';
+            v.style.transition = 'opacity 0.8s ease';
+            v.addEventListener('canplay', () => { v.style.opacity = '1'; });
+        });
+    });
+
+    gsap.utils.toArray('h2').forEach(el => {
+        gsap.from(el, {
+            y: 40, opacity: 0, duration: 0.9,
+            scrollTrigger: { trigger: el, start: 'top 88%' }
+        });
+    });
+</script>
+
+</body>
+</html>
